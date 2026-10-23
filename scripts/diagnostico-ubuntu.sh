@@ -8,6 +8,7 @@ set -euo pipefail
 printf '=== Sistema operacional ===\n'
 if [[ -r /etc/os-release ]]; then
     # Arquivo de identificação fornecido pelo sistema operacional.
+    # shellcheck disable=SC1091
     . /etc/os-release
     printf 'Versão: %s\n' "${PRETTY_NAME:-Não informada}"
 else
