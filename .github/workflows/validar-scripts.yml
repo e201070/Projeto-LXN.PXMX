@@ -1,0 +1,32 @@
+name: Validar scripts Bash
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validar-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verificar sintaxe Bash
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -type d -name .git -prune -o -type f -name '*.sh' -print0 |
+            xargs -0 -r -n 1 bash -n --
+
+      - name: Analisar scripts com ShellCheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          shellcheck --version
+          find . -type d -name .git -prune -o -type f -name '*.sh' -print0 |
+            xargs -0 -r shellcheck --
